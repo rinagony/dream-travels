@@ -1,10 +1,6 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 import Header from "../Header";
 import { Outlet } from "react-router-dom";
-import { fetchTrips } from "../../redux/trips";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
 
 const MainContent = styled.main`
   padding: 1rem;
@@ -18,11 +14,6 @@ const LayoutContainer = styled.div`
 `;
 
 const Layout = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchTrips());
-  }, [dispatch]);
 
   return (
     <LayoutContainer>

@@ -1,8 +1,7 @@
-import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { TripProps } from "../../interfaces";
 import Button from "../Button";
+import { Image } from "../../assets/styles/shared";
 
 const Card = styled.div`
   display: flex;
@@ -20,20 +19,6 @@ const Card = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-  }
-`;
-
-const Image = styled.img`
-  width: 50%;
-  max-height: 16rem;
-  object-fit: cover;
-  border-radius: 2rem 0 0 2rem;
-  margin-right: 16px;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 16px;
   }
 `;
 
@@ -85,25 +70,21 @@ const SubActions = styled.div`
 
 interface TripCardProps {
   trip: TripProps;
+  onSelectTrip: (trip: TripProps) => void;
 }
 
-const TripCard = ({ trip }: TripCardProps) => {
-  const navigate = useNavigate();
-
-  const handleOnClick = () => {
-    navigate(`/trip/${trip.id}`);
-  };
+const TripCard = ({ trip, onSelectTrip }: TripCardProps) => {
 
   return (
     <Card>
-      <Image src={trip.photo_url} alt={trip.title} />
+      <Image style={{width: '50%'}} src={trip.photo_url} alt={trip.title} />
       <Content>
         <Description>
         <h2>{trip.title}</h2>
         <p>{trip.description}</p>
         </Description>
         <Actions>
-          <Button variant="outlined" onClick={handleOnClick}>
+          <Button variant="outlined" onClick={() => onSelectTrip(trip)}>
             See trip details
           </Button>
           <SubActions>
