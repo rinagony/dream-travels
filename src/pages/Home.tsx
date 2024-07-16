@@ -9,11 +9,14 @@ import { fetchTrips } from "../redux/trips";
 import SearchHeader from "../components/SearchHeader";
 import Tabs from "../components/Tabs";
 import TripDetail from "../components/TripDetail";
+import Header from "../components/Header";
+import TripForm from "../components/TripForm";
 
 const customStyles = {
   content: {
     width: "60%",
-    margin: '0 auto'
+    margin: '0 auto',
+    height: 'fit-content',
   },
 };
 
@@ -27,6 +30,8 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
+Modal.setAppElement('#root');
+
 const Home = () => {
   const { trips, loading, error } = useSelector(
     (state: RootState) => state.trips
@@ -35,6 +40,7 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedTrip, setSelectedTrip] = useState<TripProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -69,6 +75,10 @@ const Home = () => {
     setSelectedTrip(null);
     setIsModalOpen(false);
   };
+
+  const closeCreateModal = () => {
+    setIsCreateModalOpen(false);
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -120,7 +130,8 @@ const Home = () => {
   ];
 
   return (
-    <div>
+    <div id="root">
+      <Header onCreate={() => setIsCreateModalOpen(true)}/>
       <SearchHeader
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -139,6 +150,15 @@ const Home = () => {
           onRequestClose={closeModal}
           trip={selectedTrip}
         />
+      </Modal>
+      <Modal
+        isOpen={isCreateModalOpen}
+        onRequestClose={closeCreateModal}
+        style={customStyles}
+        contentLabel="Create Trip"
+      >
+        <CloseButton onClick={closeCreateModal}>&times;</CloseButton>
+       <TripForm onRequestClose={closeCreateModal}/>
       </Modal>
     </div>
   );

@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { TripProps } from '../../interfaces';
-import { getTrips } from '../../services/api';
+import { createTrip, getTrips } from '../../services/api';
 
 interface TripsState {
   trips: TripProps[];
@@ -14,18 +14,23 @@ const initialState: TripsState = {
   error: null,
 };
 
+
 export const fetchTrips = createAsyncThunk<TripProps[]>('trips/fetchTrips', async () => {
   return await getTrips();
+});
+
+export const createTripCall = createAsyncThunk('trips/createTrip', async (newTrip: TripProps) => {
+  return await createTrip(newTrip);
 });
 
 const tripsSlice = createSlice({
   name: 'trips',
   initialState,
   reducers: {
-    addTrip: (state, action) => {
+    addTrip: (state, action: PayloadAction<TripProps>) => {
       state.trips.push(action.payload);
     },
-    removeTrip: (state, action) => {
+    removeTrip: (state, action: PayloadAction<{ id: string }>) => {
       state.trips = state.trips.filter(trip => trip.id !== action.payload.id);
     },
   },
@@ -42,6 +47,9 @@ const tripsSlice = createSlice({
       .addCase(fetchTrips.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch trips';
+      })
+      .addCase(createTripCall.fulfilled, (state, action) => {
+        state.trips.push(action.payload);
       });
   },
 });

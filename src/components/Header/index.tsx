@@ -13,15 +13,15 @@ const HeaderContainer = styled.header`
   padding: 1rem 2rem;
 `;
 
-const Header = () => {
-  const handleOnCreateNewTrip = () => {
-    console.log("Create new trip");
-  };
+interface HeaderProps {
+  onCreate: () => void;
+}
 
+const Header = ({onCreate}: HeaderProps) => {
   return (
     <HeaderContainer>
       <LogoSvg />
-      <Button variant="transparent" onClick={handleOnCreateNewTrip}>
+      <Button variant="transparent" onClick={onCreate}>
         Create new trip
       </Button>
     </HeaderContainer>

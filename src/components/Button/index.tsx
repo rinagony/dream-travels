@@ -1,10 +1,11 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React from "react";
+import styled, { css } from "styled-components";
 
 interface ButtonProps {
-  variant?: 'filled' | 'outlined' | 'transparent';
+  variant?: "filled" | "outlined" | "transparent";
   onClick?: () => void;
   children: React.ReactNode;
+  type?: "button" | "submit" | "reset";
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -16,7 +17,7 @@ const StyledButton = styled.button<ButtonProps>`
   transition-timing-function: ease-in-out;
 
   ${({ variant, theme }) =>
-    variant === 'filled' &&
+    variant === "filled" &&
     css`
       background-color: ${theme.colors.black};
       color: ${theme.colors.white};
@@ -29,7 +30,7 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 
   ${({ variant, theme }) =>
-    variant === 'outlined' &&
+    variant === "outlined" &&
     css`
       background-color: ${theme.colors.white};
       color: ${theme.colors.black};
@@ -38,7 +39,7 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 
     ${({ variant, theme }) =>
-    variant === 'transparent' &&
+    variant === "transparent" &&
     css`
       background-color: ${theme.colors.white};
       color: ${theme.colors.black};
@@ -50,9 +51,14 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 `;
 
-const Button = ({ variant = 'filled', onClick, children }: ButtonProps) => {
+const Button = ({
+  variant = "filled",
+  onClick,
+  type = "button",
+  children,
+}: ButtonProps) => {
   return (
-    <StyledButton variant={variant} onClick={onClick}>
+    <StyledButton type={type} variant={variant} onClick={onClick}>
       {children}
     </StyledButton>
   );
